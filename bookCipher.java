@@ -12,12 +12,17 @@ public class bookCipher{
     System.out.println("Also, \"-\"s are considered words in themselves when used as em dashes");
     try{
     String[] toEncrypt = args;
-    System.out.println(Arrays.toString(twilightCipher(toEncrypt)));
+    System.out.println("Encrypted input:");
+    String ciphered = Arrays.toString(twilightCipher(toEncrypt));
+    System.out.println(ciphered);
+    System.out.println("Decrypted input:");
+    String deciphered = Arrays.toString(twilightDecipher(twilightCipher(toEncrypt)));
+    System.out.println(deciphered);
     }catch(FileNotFoundException e){
       System.out.println("Sorry, file not found");
     }
   }
-  public static int[] twilightCipher(String[] toEncrypt) throws FileNotFoundException{
+  private static ArrayList<String> makeCipher() throws FileNotFoundException{
     File f = new File("twilight.txt");
     Scanner in = new Scanner(f);
     ArrayList<String> cipher = new ArrayList<String>();
@@ -29,24 +34,35 @@ public class bookCipher{
         word = word.replace(".", "");
         cipher.add(word);
     }
+    return cipher;
+  }
+  public static int[] twilightCipher(String[] toEncrypt) throws FileNotFoundException{
+    ArrayList<String> cipher = makeCipher();
     int[] encrypted = new int[toEncrypt.length];
     for (int i = 0; i<toEncrypt.length; i++){
       String word = toEncrypt[i];
       if (cipher.contains(word)){
-        encrypted[i] = cipher.indexOf(word);
-        cipher.remove(word);
+        int index = cipher.indexOf(word);
+        encrypted[i] = index;
+        cipher.set(index, "-1");
       }else{
         encrypted[i] = -1;
       }
     }
     return encrypted;
-    //return cipher;
-    /**
-    String[] encryptedWords = new String[wordsToEncrypt.length];
-    for (int i = 0; i < wordsToEncrypt.length; i++){
-
+  }
+  public static String[] twilightDecipher(int[] toDecrypt) throws FileNotFoundException{
+    ArrayList<String> cipher = makeCipher();
+    String[] decrypted = new String[toDecrypt.length];
+    for (int i = 0; i<toDecrypt.length; i++){
+      int index = toDecrypt[i];
+      if (index == -1){
+        decrypted[i] = "cannotDecrypt";
+      }else{
+        decrypted[i] = cipher.get(index);
+      }
     }
-    **/
+    return decrypted;
   }
 
 }
