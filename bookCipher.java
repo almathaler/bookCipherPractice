@@ -12,6 +12,12 @@ public class bookCipher{
     System.out.println("Also, \"-\"s are considered words in themselves when used as em dashes");
     try{
     String[] toEncrypt = args;
+    for (int i = 0; i<toEncrypt.length; i++){
+      toEncrypt[i] = toEncrypt[i].replace("\"", "");
+      toEncrypt[i] = toEncrypt[i].replace(",", "");
+      toEncrypt[i] = toEncrypt[i].replace(".", "");
+      toEncrypt[i] = toEncrypt[i].toUpperCase();
+    }
     System.out.println("Encrypted input:");
     String ciphered = Arrays.toString(twilightCipher(toEncrypt));
     System.out.println(ciphered);
@@ -32,6 +38,7 @@ public class bookCipher{
         word = word.replace("\"", "");
         word = word.replace(",", "");
         word = word.replace(".", "");
+        word = word.toUpperCase();
         cipher.add(word);
     }
     return cipher;
